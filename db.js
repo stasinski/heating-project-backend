@@ -1,19 +1,22 @@
 const mysql = require("mysql2");
 const { Client } = require("ssh2");
 const sshClient = new Client();
+require("dotenv").config();
+
 const dbServer = {
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: "heating",
-  database: "heating",
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 };
 const tunnelConfig = {
-  host: "192.168.0.111",
-  port: 22,
-  user: "pi",
-  password: "9He@ting6",
+  host: process.env.DB_SSH_HOST,
+  port: process.env.DB_SSH_PORT,
+  username: process.env.DB_SSH_USER,
+  password: process.env.DB_SSH_PASSWORD,
 };
+
 const forwardConfig = {
   srcHost: "127.0.0.1",
   srcPort: 3306,
