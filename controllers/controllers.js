@@ -84,6 +84,7 @@ exports.postSensorsConfig = (req, res) => {
   // LWT Topic -string
   // Group -string
   // RoomName -string
+
   const { Topic, LWT_Topic, Group, RoomName } = req.body;
   if (!(Topic && LWT_Topic && Group && RoomName)) {
     res.status(400).json("Bad Request");
@@ -92,7 +93,7 @@ exports.postSensorsConfig = (req, res) => {
     const query = `UPDATE heating.sensors_config SET ? WHERE id = 1`;
     connection.query(
       query,
-      { ID: Math.random(), Group, Topic, RoomName, LwtTopic: LWT_Topic },
+      { Group, Topic, RoomName, LwtTopic: LWT_Topic },
       (error, results) => {
         if (error) {
           res.status(400).json(error);
