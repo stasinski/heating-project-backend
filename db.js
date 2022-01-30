@@ -32,6 +32,7 @@ const SSHConnection = new Promise((resolve, reject) => {
         forwardConfig.dstHost,
         forwardConfig.dstPort,
         (err, stream) => {
+          console.log(err);
           if (err) reject(err);
           const updatedDbServer = {
             ...dbServer,
@@ -40,6 +41,7 @@ const SSHConnection = new Promise((resolve, reject) => {
           const connection = mysql.createConnection(updatedDbServer);
           connection.connect((error) => {
             if (error) {
+              console.log(error);
               reject(error);
             }
             resolve(connection);
