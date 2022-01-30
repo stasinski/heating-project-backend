@@ -24,19 +24,15 @@ const forwardConfig = {
   dstPort: dbServer.port,
 };
 
-console.log(sshClient);
 const SSHConnection = new Promise((resolve, reject) => {
   sshClient
     .on("ready", () => {
-      console.log("SSH connection established");
       sshClient.forwardOut(
         forwardConfig.srcHost,
         forwardConfig.srcPort,
         forwardConfig.dstHost,
         forwardConfig.dstPort,
         (err, stream) => {
-          console.log(err);
-          console.log(stream);
           if (err) reject(err);
           const updatedDbServer = {
             ...dbServer,
@@ -45,7 +41,6 @@ const SSHConnection = new Promise((resolve, reject) => {
           const connection = mysql.createConnection(updatedDbServer);
           connection.connect((error) => {
             if (error) {
-              console.log(error);
               reject(error);
             }
             resolve(connection);
