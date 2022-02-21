@@ -15,19 +15,28 @@ export const get = (_: Request, res: Response) => {
 
 export const post = (req: Request, res: Response) => {
   // Topic -string
-  // LWT Topic -string
-  // Group -string
+  // LWT Topic -number
+  // Group -number
   // RoomName -string
+  // SetPoint -number
+  const { Topic, LWT_Topic, Group, RoomName, SetPoint } = req.body;
 
-  const { Topic, LWT_Topic, Group, RoomName } = req.body;
+  // SetPoint is nullable
   if (!(Topic && LWT_Topic && Group && RoomName)) {
     res.status(400).json("Bad Request");
   }
+  const setPointRounded = Math.round(SetPoint * 100) / 100;
   SSHConnection.then((connection) => {
     const query = `UPDATE heating.sensors_config SET ? WHERE id = 1`;
     connection.query(
       query,
-      { Group, Topic, RoomName, LwtTopic: LWT_Topic },
+      {
+        Group,
+        Topic,
+        RoomName,
+        LwtTopic: LWT_Topic,
+        SetPoint: setPointRounded,
+      },
       (error, results) => {
         if (error) {
           res.status(400).json(error);
