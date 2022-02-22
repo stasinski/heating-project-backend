@@ -10,19 +10,24 @@ export const get = (_: Request, res: Response) => {
   });
 };
 
-export const post = (req: Request, res: Response) => {
-  const { Topic, LWT_Topic, Group } = req.body;
-  if (!(Topic && LWT_Topic && Group)) {
-    res.status(400).json("Bad Request");
+export const put = (req: Request, res: Response) => {
+  const { Topic, LWT_Topic, Group, ID } = req.body;
+  if (!(Topic && LWT_Topic && Group && ID)) {
+    return res.status(400).json("Bad Request");
   }
   SSHConnection.then((connection) => {
-    const query = `INSERT INTO heating.relays SET ?`;
+    const query = `UPDATE heating.relays SET ? WHERE id = ${ID}`;
     connection.query(
       query,
-      { ID: Math.random(), Group: Group, "LWT Topic": LWT_Topic, Topic: Topic },
+      {
+        Group: Group,
+        "LWT Topic": LWT_Topic,
+        Topic: Topic,
+      },
       (error) => {
         if (error) {
-          res.status(400).json(error);
+          console.log(error);
+          res.json(error);
         }
         res.json("ok");
       }

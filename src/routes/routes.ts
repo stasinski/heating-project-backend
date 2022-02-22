@@ -9,10 +9,10 @@ route.get("/config", controller.config.get);
 
 route.get("/sensors-config", controller.sensors.get);
 
-route.post("/relays", controller.relays.post);
+route.put("/relays", controller.relays.put);
 
 route.post("/config", controller.config.post);
 
-route.post("/sensors-config", controller.sensors.post);
+route.put("/sensors-config", controller.sensors.put);
 
 export default route;

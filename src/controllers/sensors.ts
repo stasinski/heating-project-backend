@@ -13,21 +13,21 @@ export const get = (_: Request, res: Response) => {
   });
 };
 
-export const post = (req: Request, res: Response) => {
+export const put = (req: Request, res: Response) => {
   // Topic -string
-  // LWT Topic -number
+  // LWT Topic -string
   // Group -number
   // RoomName -string
   // SetPoint -number
-  const { Topic, LWT_Topic, Group, RoomName, SetPoint } = req.body;
+  const { Topic, LWT_Topic, Group, RoomName, SetPoint, ID } = req.body;
 
   // SetPoint is nullable
-  if (!(Topic && LWT_Topic && Group && RoomName)) {
+  if (!(Topic && LWT_Topic && Group && RoomName && ID)) {
     res.status(400).json("Bad Request");
   }
   const setPointRounded = Math.round(SetPoint * 100) / 100;
   SSHConnection.then((connection) => {
-    const query = `UPDATE heating.sensors_config SET ? WHERE id = 1`;
+    const query = `UPDATE heating.sensors_config SET ? WHERE id = ${ID}`;
     connection.query(
       query,
       {
